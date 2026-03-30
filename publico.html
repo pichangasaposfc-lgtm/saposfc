@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0d0d0d">
+<title>SAPOS FC — Transparencia</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;1,400&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0d0d;--surface:#161616;--card:#1e1e1e;--card2:#272727;
+  --border:#333;--border2:#252525;
+  --gold:#c8a84b;--green:#4ecb71;--red:#e05555;
+  --muted:#666;--text:#ede8da;
+  --fd:'Bebas Neue',sans-serif;--fu:'Barlow Condensed',sans-serif;--fb:'Barlow',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* HERO */
+.hero{background:linear-gradient(160deg,#0d1f12 0%,#0d0d0d 60%);border-bottom:1px solid rgba(200,168,75,.2);padding:28px 16px 24px;position:relative;overflow:hidden}
+.hero::before{content:'🐸';position:absolute;right:-10px;bottom:-20px;font-size:140px;opacity:.04;line-height:1}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(200,168,75,.12);border:1px solid rgba(200,168,75,.3);border-radius:20px;padding:5px 12px;font-family:var(--fu);font-size:11px;letter-spacing:2px;color:var(--gold);margin-bottom:12px}
+.hero-title{font-family:var(--fd);font-size:48px;letter-spacing:3px;color:var(--gold);line-height:.9}
+.hero-sub{font-family:var(--fu);font-size:13px;color:var(--muted);letter-spacing:2px;margin-top:6px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse .8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--border2);background:var(--surface);position:sticky;top:0;z-index:50;overflow-x:auto}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:1;min-width:70px;padding:14px 8px;font-family:var(--fu);font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);text-align:center;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.tab.on{color:var(--gold);border-bottom-color:var(--gold)}
+
+/* SCREENS */
+.panel{display:none;padding:16px;animation:fu .2s ease}.panel.on{display:block}
+@keyframes fu{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* TYPOGRAPHY */
+.ttl{font-family:var(--fd);font-size:28px;letter-spacing:1px;line-height:1}.ttl em{color:var(--gold);font-style:normal}
+.lbl{font-family:var(--fu);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:14px;margin-bottom:10px}
+.card-gold{border-color:rgba(200,168,75,.35);background:linear-gradient(135deg,var(--card) 0%,rgba(200,168,75,.05) 100%)}
+
+/* CAJA */
+.caja-big{font-family:var(--fd);font-size:64px;color:var(--gold);line-height:1;text-align:center}
+.caja-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border2)}.caja-row:last-child{border-bottom:none}
+.caja-key{font-family:var(--fu);font-size:15px;color:var(--muted)}.caja-val{font-family:var(--fd);font-size:24px}
+.mov-row{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--border2)}.mov-row:last-child{border-bottom:none}
+
+/* HISTORIAL */
+.day-card{background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-bottom:10px}
+.day-match{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--border2);font-size:14px}.day-match:last-child{border-bottom:none}
+.stag{font-family:var(--fu);font-size:11px;font-weight:700;padding:3px 9px;border-radius:5px;letter-spacing:.5px;text-transform:uppercase}
+.stag.win{background:rgba(78,201,113,.18);color:#4ecb71}.stag.draw{background:rgba(200,168,75,.18);color:var(--gold)}
+.lig-table{width:100%;border-collapse:collapse}
+.lig-table th{font-family:var(--fu);font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;padding:6px 8px;text-align:left;border-bottom:1px solid var(--border2)}
+.lig-table td{padding:10px 8px;font-family:var(--fu);font-size:15px;border-bottom:1px solid rgba(255,255,255,.04)}
+.lig-table tr:last-child td{border-bottom:none}
+.pos-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:6px}
+
+/* JUGADORES */
+.prow{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--card);border:1px solid var(--border2);border-radius:12px;margin-bottom:8px}
+.pav{border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fu);font-weight:700;flex-shrink:0}
+.lbadge{display:inline-flex;padding:3px 9px;border-radius:5px;font-family:var(--fu);font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.lbadge.crack{background:rgba(255,215,0,.18);color:#ffd700;border:1px solid rgba(255,215,0,.3)}
+.lbadge.fijo{background:rgba(78,158,226,.18);color:#6db3f2;border:1px solid rgba(78,158,226,.3)}
+.lbadge.pulmon{background:rgba(78,201,113,.18);color:#4ecb71;border:1px solid rgba(78,201,113,.3)}
+.lbadge.cono{background:rgba(224,85,85,.18);color:#e05555;border:1px solid rgba(224,85,85,.3)}
+
+/* STATS CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stat-card{background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:14px 8px;text-align:center}
+.stat-v{font-family:var(--fd);font-size:32px;color:var(--gold);line-height:1}
+.stat-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+
+/* LOADING */
+.loading{text-align:center;padding:60px 20px;color:var(--muted)}
+.loading-frog{font-size:48px;animation:hop .6s ease infinite alternate;display:block;margin-bottom:12px}
+@keyframes hop{from{transform:translateY(0)}to{transform:translateY(-8px)}}
+
+/* EMPTY */
+.empty{text-align:center;padding:40px 20px;color:var(--muted)}
+.empty-ico{font-size:44px;margin-bottom:10px}.empty-txt{font-family:var(--fu);font-size:16px;line-height:1.5}
+
+/* FOOTER */
+.footer{text-align:center;padding:28px 16px 40px;font-family:var(--fu);font-size:12px;color:var(--muted);letter-spacing:1px;border-top:1px solid var(--border2);margin-top:8px}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge"><div class="live-dot"></div>EN VIVO · DATOS REALES</div>
+  <div class="hero-title">SAPOS<br>FC</div>
+  <div class="hero-sub">REYES DEL CHARCO · TRANSPARENCIA TOTAL</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab on"  onclick="goTab('caja')"      id="tab-caja">💰 Caja</div>
+  <div class="tab"     onclick="goTab('resultados')" id="tab-resultados">📋 Resultados</div>
+  <div class="tab"     onclick="goTab('jugadores')"  id="tab-jugadores">👥 Jugadores</div>
+</div>
+
+<!-- ══ CAJA ══ -->
+<div class="panel on" id="panel-caja">
+  <div id="caja-content"><div class="loading"><span class="loading-frog">🐸</span>Cargando...</div></div>
+</div>
+
+<!-- ══ RESULTADOS ══ -->
+<div class="panel" id="panel-resultados">
+  <div id="resultados-content"><div class="loading"><span class="loading-frog">🐸</span>Cargando...</div></div>
+</div>
+
+<!-- ══ JUGADORES ══ -->
+<div class="panel" id="panel-jugadores">
+  <div id="jugadores-content"><div class="loading"><span class="loading-frog">🐸</span>Cargando...</div></div>
+</div>
+
+<div class="footer">🐸 SAPOS FC · REYES DEL CHARCO · DATOS EN TIEMPO REAL</div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore, collection, doc, getDoc,
+  onSnapshot, query, orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBVqpA-AMesmie-P7W0Krrl6DOwl-r5nIg",
+  authDomain: "saposfc-86c4b.firebaseapp.com",
+  projectId: "saposfc-86c4b",
+  storageBucket: "saposfc-86c4b.firebasestorage.app",
+  messagingSenderId: "814336056363",
+  appId: "1:814336056363:web:2b88c8a57673e9dc2c5e6e"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+/* ══ STATE ══ */
+let DATA = { jugadores:[], historial:[], movimientos:[], recaudado:0, pagadoCamp:0 };
+
+const GICO = {lavado:'🧺',pelota:'⚽',chaleco:'🦺',cancha:'🏟',otro:'📌'};
+const IICO = {donacion:'💝',sponsor:'🏷️',multa:'⚠️',otro:'📌'};
+const LC   = {crack:'crack',fijo:'fijo',pulmon:'pulmon',cono:'cono'};
+
+function fmtD(ts){ return new Date(ts).toLocaleDateString('es-PE',{weekday:'short',day:'2-digit',month:'short',year:'numeric'}); }
+function ini(n){ return (n||'?')[0].toUpperCase(); }
+function avBg(l){ return{crack:'rgba(255,215,0,.2)',fijo:'rgba(78,158,226,.2)',pulmon:'rgba(78,201,113,.2)',cono:'rgba(224,85,85,.2)'}[l]||'var(--card2)'; }
+function avBd(l){ return{crack:'#ffd700',fijo:'#6db3f2',pulmon:'#4ecb71',cono:'#e05555'}[l]||'var(--border)'; }
+
+/* ══ TABS ══ */
+window.goTab = name => {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('panel-'+name).classList.add('on');
+  document.getElementById('tab-'+name).classList.add('on');
+  renderTab(name);
+};
+
+function renderTab(name){
+  if(name==='caja')      renderCaja();
+  if(name==='resultados') renderResultados();
+  if(name==='jugadores') renderJugadores();
+}
+
+/* ══ CAJA ══ */
+function renderCaja(){
+  const gastos   = DATA.movimientos.filter(m=>m.tipo_mov==='gasto').reduce((a,m)=>a+(m.monto||0),0);
+  const ingresos = DATA.movimientos.filter(m=>m.tipo_mov==='ingreso').reduce((a,m)=>a+(m.monto||0),0);
+  const saldo    = (DATA.recaudado||0)+ingresos-(DATA.pagadoCamp||0)-gastos;
+
+  const movs = [...DATA.movimientos].reverse();
+
+  document.getElementById('caja-content').innerHTML=`
+    <div class="card card-gold" style="margin-bottom:12px">
+      <div style="padding:12px 0 16px;text-align:center">
+        <div class="lbl" style="margin-bottom:6px">SALDO ACTUAL</div>
+        <div class="caja-big">S/ ${saldo.toFixed(0)}</div>
+      </div>
+      <div class="caja-row"><div class="caja-key">💵 Recaudado (pocitos)</div><div class="caja-val">S/ ${DATA.recaudado||0}</div></div>
+      <div class="caja-row"><div class="caja-key">💚 Ingresos extra</div><div class="caja-val" style="color:var(--green)">S/ ${ingresos}</div></div>
+      <div class="caja-row"><div class="caja-key">🏆 Al campeón</div><div class="caja-val" style="color:var(--red)">S/ ${DATA.pagadoCamp||0}</div></div>
+      <div class="caja-row"><div class="caja-key">🗑️ Gastos</div><div class="caja-val" style="color:var(--red)">S/ ${gastos}</div></div>
+    </div>
+    <div class="card">
+      <div class="lbl" style="margin-bottom:12px">📋 MOVIMIENTOS</div>
+      ${movs.length ? movs.map(m=>{
+        const eg=m.tipo_mov==='gasto';
+        const ico=eg?(GICO[m.tipo]||'📌'):(IICO[m.tipo]||'💝');
+        return `<div class="mov-row">
+          <div style="flex:1">
+            <div style="font-family:var(--fu);font-size:15px">${ico} ${m.desc}</div>
+            <div style="font-size:11px;color:var(--muted)">${fmtD(m.ts)}</div>
+          </div>
+          <span style="font-family:var(--fd);font-size:22px;color:${eg?'var(--red)':'var(--green)'}">${eg?'−':'+'}S/${m.monto}</span>
+        </div>`;
+      }).join('') : '<div style="color:var(--muted);text-align:center;padding:16px;font-family:var(--fu)">Sin movimientos</div>'}
+    </div>`;
+}
+
+/* ══ RESULTADOS ══ */
+function renderResultados(){
+  const dias = [...DATA.historial].reverse();
+  if(!dias.length){
+    document.getElementById('resultados-content').innerHTML='<div class="empty"><div class="empty-ico">📋</div><div class="empty-txt">Sin resultados aún</div></div>';
+    return;
+  }
+  document.getElementById('resultados-content').innerHTML = dias.map(dia=>{
+    const rondas=dia.rondas&&dia.rondas.length?dia.rondas:(dia.equipos?[{equipos:dia.equipos,partidos:dia.partidos,sorteoNum:1}]:[]);
+    return `<div class="day-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div>
+          <div style="font-family:var(--fu);font-size:13px;font-weight:700;color:var(--muted);letter-spacing:1px">${fmtD(dia.ts).toUpperCase()}</div>
+          ${dia.pocito?`<div style="font-family:var(--fu);font-size:12px;color:${dia.pocito_revertido?'var(--red)':'var(--gold)'}">
+            💰 S/${dia.pocito.total} · ${dia.pocito.n} jugadores · ${rondas.length} sorteo${rondas.length>1?'s':''}
+            ${dia.pocito_revertido?'<span style="color:var(--red)"> · REVERTIDO</span>':''}
+          </div>`:''}
+        </div>
+      </div>
+      ${rondas.map(r=>renderRonda(r)).join('')}
+    </div>`;
+  }).join('');
+}
+
+function renderRonda(r){
+  const eqs=r.equipos.map(e=>({...e,pg:0,pe:0,pp:0,puntos:0,gf:0,gc:0}));
+  r.partidos.forEach(p=>{
+    if(p.ga===null||p.gb===null) return;
+    const a=eqs[p.a],b=eqs[p.b];
+    a.gf+=p.ga;a.gc+=p.gb;b.gf+=p.gb;b.gc+=p.ga;
+    if(p.ga>p.gb){a.pg++;a.puntos+=3;b.pp++;}
+    else if(p.ga<p.gb){b.pg++;b.puntos+=3;a.pp++;}
+    else{a.pe++;a.puntos++;b.pe++;b.puntos++;}
+  });
+  const sorted=[...eqs].sort((a,b)=>b.puntos-a.puntos);
+  const played=r.partidos.filter(p=>p.ga!==null);
+  const champ=sorted[0];
+  return `<div style="background:var(--card2);border-radius:10px;padding:12px;margin-bottom:8px">
+    <div style="font-family:var(--fu);font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:8px">${r.sorteoNum>1?'SORTEO #'+r.sorteoNum:'SORTEO'}</div>
+    ${champ&&champ.puntos>0?`<div style="display:flex;align-items:center;gap:6px;padding:7px 10px;background:rgba(200,168,75,.08);border:1px solid rgba(200,168,75,.2);border-radius:8px;margin-bottom:8px">
+      <span>${champ.emoji}</span>
+      <span style="font-family:var(--fu);font-size:15px;font-weight:700;color:${champ.text}">🏆 ${champ.nombre}</span>
+      <span style="font-family:var(--fd);font-size:20px;color:var(--gold);margin-left:auto">${champ.puntos}pts</span>
+    </div>`:''}
+    ${played.length?played.map(p=>{
+      const ta=r.equipos[p.a],tb=r.equipos[p.b],win=p.ga>p.gb?ta:p.gb>p.ga?tb:null;
+      return `<div class="day-match">
+        <span style="font-family:var(--fu);font-size:14px;color:${ta.text}">${ta.emoji} ${ta.nombre}</span>
+        <span style="font-family:var(--fd);font-size:18px;flex:1;text-align:center">${p.ga} — ${p.gb}</span>
+        <span style="font-family:var(--fu);font-size:14px;color:${tb.text}">${tb.emoji} ${tb.nombre}</span>
+        ${win?`<span class="stag win" style="font-size:10px">${win.nombre}</span>`:`<span class="stag draw" style="font-size:10px">Emp.</span>`}
+      </div>`;
+    }).join(''):'<div style="font-size:13px;color:var(--muted);padding:6px 0">Sin partidos jugados</div>'}
+    ${played.length?`<table class="lig-table" style="margin-top:8px">
+      <thead><tr><th>#</th><th>Equipo</th><th style="text-align:center">G</th><th style="text-align:center">E</th><th style="text-align:right">PTS</th></tr></thead>
+      <tbody>${sorted.map((e,i)=>`<tr>
+        <td><span class="pos-dot" style="background:${e.text}"></span>${i+1}</td>
+        <td style="color:${i===0&&e.puntos>0?e.text:'inherit'};font-weight:${i===0&&e.puntos>0?700:400}">${e.emoji} ${e.nombre}</td>
+        <td style="text-align:center">${e.pg}</td><td style="text-align:center">${e.pe}</td>
+        <td style="text-align:right;font-size:18px;font-weight:700;color:${i===0&&e.puntos>0?e.text:'var(--gold)'}">${e.puntos}</td>
+      </tr>`).join('')}</tbody>
+    </table>`:''}
+  </div>`;
+}
+
+/* ══ JUGADORES ══ */
+function renderJugadores(){
+  const lo={crack:0,fijo:1,pulmon:2,cono:3};
+  const list=[...DATA.jugadores].sort((a,b)=>(lo[a.level]??9)-(lo[b.level]??9));
+
+  // Stats
+  const total=list.length;
+  const byLevel={crack:0,fijo:0,pulmon:0,cono:0};
+  list.forEach(p=>byLevel[p.level]=(byLevel[p.level]||0)+1);
+
+  if(!list.length){
+    document.getElementById('jugadores-content').innerHTML='<div class="empty"><div class="empty-ico">👥</div><div class="empty-txt">Sin jugadores registrados</div></div>';
+    return;
+  }
+
+  document.getElementById('jugadores-content').innerHTML=`
+    <div class="stats-grid" style="margin-bottom:14px">
+      <div class="stat-card"><div class="stat-v">${total}</div><div class="stat-l">Total</div></div>
+      <div class="stat-card"><div class="stat-v" style="color:#ffd700">${byLevel.crack||0}</div><div class="stat-l">⭐ Crack</div></div>
+      <div class="stat-card"><div class="stat-v" style="color:#6db3f2">${byLevel.fijo||0}</div><div class="stat-l">🔵 Fijo</div></div>
+    </div>
+    <div class="stats-grid" style="margin-bottom:16px">
+      <div class="stat-card"><div class="stat-v" style="color:#4ecb71">${byLevel.pulmon||0}</div><div class="stat-l">🟢 Pulmón</div></div>
+      <div class="stat-card"><div class="stat-v" style="color:#e05555">${byLevel.cono||0}</div><div class="stat-l">🔴 Cono</div></div>
+      <div class="stat-card"><div class="stat-v">${DATA.historial.length}</div><div class="stat-l">📋 Días</div></div>
+    </div>
+    ${list.map(p=>`<div class="prow">
+      <div class="pav" style="width:44px;height:44px;font-size:18px;background:${avBg(p.level)};border:2px solid ${avBd(p.level)}">${ini(p.name)}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:var(--fu);font-size:17px;font-weight:700;line-height:1.1">${p.name}</div>
+        ${p.alias?`<div style="font-size:12px;color:var(--gold);font-style:italic">"${p.alias}"</div>`:''}
+        ${p.votes&&p.votes.length?`<div style="font-size:11px;color:var(--muted);margin-top:2px">⭐ ${(p.votes.reduce((a,b)=>a+b,0)/p.votes.length).toFixed(1)} · ${p.votes.length} votos</div>`:''}
+      </div>
+      <span class="lbadge ${LC[p.level]}">${p.level}</span>
+    </div>`).join('')}`;
+}
+
+/* ══ FIRESTORE LISTENERS (tiempo real) ══ */
+onSnapshot(collection(db,'jugadores'), snap=>{
+  DATA.jugadores=snap.docs.map(d=>({id:d.id,...d.data()}));
+  if(document.getElementById('tab-jugadores').classList.contains('on')) renderJugadores();
+});
+
+onSnapshot(query(collection(db,'historial'),orderBy('ts','asc')), snap=>{
+  DATA.historial=snap.docs.map(d=>({id:d.id,...d.data()}));
+  if(document.getElementById('tab-resultados').classList.contains('on')) renderResultados();
+});
+
+onSnapshot(query(collection(db,'movimientos'),orderBy('ts','asc')), snap=>{
+  DATA.movimientos=snap.docs.map(d=>({id:d.id,...d.data()}));
+  if(document.getElementById('tab-caja').classList.contains('on')) renderCaja();
+});
+
+onSnapshot(doc(db,'estado','caja'), snap=>{
+  if(snap.exists()){
+    const c=snap.data();
+    DATA.recaudado  = c.recaudado  || 0;
+    DATA.pagadoCamp = c.pagadoCamp || 0;
+    if(document.getElementById('tab-caja').classList.contains('on')) renderCaja();
+  }
+});
+
+/* ══ INIT ══ */
+// La primera renderización ocurre via onSnapshot cuando llegan los datos
+setTimeout(()=>{
+  const caja=document.getElementById('caja-content');
+  if(caja.innerHTML.includes('Cargando')) renderCaja();
+},3000);
+
+</script>
+</body>
+</html>
